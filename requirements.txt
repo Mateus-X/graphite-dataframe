@@ -1,10 +1,11 @@
-# requirements.txt
-# Liste aqui os pacotes e versões necessários para seu projeto Python
-
 pandas
 numpy
 requests
 pydantic
 fastapi
-# Exemplo de versão específica:
-# flask==2.3.2
+uvicorn
+python-dotenv
+plotly
+jinja2
+redis
+redis[hiredis]
