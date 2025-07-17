@@ -1,6 +1,27 @@
 from pydantic import BaseModel
 from typing import Dict, List, Optional
 from datetime import date
+from typing import Generic, TypeVar
+
+T = TypeVar("T")
+
+class Response(BaseModel, Generic[T]):
+    message: str
+    data: T
+
+class NewDonorsPerYear(BaseModel):
+    year: int
+    new_donors: int
+
+class Churns(BaseModel):
+    year: int
+    new_donors: int
+
+class ChurnsDto(BaseModel):
+    churns_per_year: List[NewDonorsPerYear]
+
+class NewDonorsDto(BaseModel):
+    new_donors_per_year: List[NewDonorsPerYear]
 
 class DonationMetrics(BaseModel):
     total_raised: float

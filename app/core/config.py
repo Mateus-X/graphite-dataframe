@@ -1,14 +1,14 @@
 from pydantic import BaseSettings
 
 class Settings(BaseSettings):
+    REDIS_HOST: str
+    REDIS_PORT: int
+    REDIS_DB: int
+    REDIS_PASSWORD: str = None
+    MAIN_API: str
+
     class Config:
         env_file = ".env"
-
-    REDIS_HOST: str = "localhost"
-    REDIS_PORT: int = 6379
-    REDIS_DB: int = 0
-    REDIS_PASSWORD: str = None
-    
-
+        env_file_encoding = "utf-8"
 
 settings = Settings()

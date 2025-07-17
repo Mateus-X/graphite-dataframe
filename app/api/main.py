@@ -6,7 +6,10 @@ from typing import Optional
 from datetime import datetime
 
 from app.domain import schemas
-from app.core import services
+from app.core.services import ReportService
+from fastapi.responses import Response
+
+
 
 app = FastAPI(
     title="Report Generator API",
@@ -15,25 +18,14 @@ app = FastAPI(
 )
 
 @app.post("/generate-report", response_class=HTMLResponse)
-async def generate_report(file: UploadFile, report_type: Optional[str] = "default"):
+async def generate_report(userId: str):
     """
     Endpoint principal que recebe o arquivo Excel e retorna o HTML do relatório
-    """
+    """    
+    # Geração do relatório
     try:
-        # Validação básica do arquivo
-        if not file.filename.endswith(('.parquet')):
-            raise HTTPException(400, "Invalid format")
-        
-        # Processamento do arquivo
-        with tempfile.NamedTemporaryFile(delete=True) as tmp:
-            tmp.write(await file.read())
-            df = services.process_excel_file(tmp.name)
-        
-        # Geração do relatório
-        report_data = services.analyze_donation_data(df)
-        html_content = services.generate_html_report(report_data, report_type)
+        html_content = await ReportService().generate_plot_for_churns_vs_new_donors(userId=userId)
         
         return HTMLResponse(content=html_content, status_code=200)
-    
     except Exception as e:
         raise HTTPException(500, f"Erro ao processar relatório: {str(e)}")
